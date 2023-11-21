@@ -133,7 +133,7 @@ const finishedTask = (event) => {
   event.target.parentNode.parentNode.children[4].innerText = "completed";
   event.target.parentNode.parentNode.children[4].style.background = "rgb(0, 161, 255)";
   event.target.parentNode.parentNode.children[4].style.background =
-    "linear-gradient(329deg, rgba(0, 161, 255, 1) 0%, rgba(0, 255, 143, 1) 100%)";
+    "linear-gradient(329deg, rgba(0, 161, 255, 1) 0%, rgba(90, 233, 171) 100%)";
   const uniqueId =parseInt(event.target.parentNode.parentNode.id) 
   setCompletedStatus(uniqueId);
   showToast("Task is Completed","completed")
