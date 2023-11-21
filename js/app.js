@@ -26,12 +26,12 @@ const showToast = (msg, textStatus) => {
 };
 
 // display current task
-const displayTasks = ()=>{
+const displayTasks = () => {
   const tasks = getItemFromLocalStorage();
-  tasks.map(task => createTask(task.taskValue,task.taskId,task.isCompleted));
-  completedTask()
-  incompletedTask()
-}
+  tasks.map((task) => createTask(task.taskValue, task.taskId, task.isCompleted));
+  completedTask();
+  incompletedTask();
+};
 
 window.addEventListener("DOMContentLoaded", displayTasks);
 
@@ -41,7 +41,7 @@ const addTask = () => {
   const taskValue = inputField.value;
   const taskId = Date.now().toString();
   let isCompleted = false;
-  createTask(taskValue, taskId , isCompleted);
+  createTask(taskValue, taskId, isCompleted);
   showToast("Task is added", "success");
   const tasks = getItemFromLocalStorage();
   tasks.push({ taskValue, taskId, isCompleted });
@@ -50,27 +50,29 @@ const addTask = () => {
 };
 
 // create Task
-const createTask = (taskValue, taskId , isCompleted) => {
+const createTask = (taskValue, taskId, isCompleted) => {
   const innerElement = document.createElement("div");
   innerElement.classList.add("content");
   innerElement.id = taskId;
-  if(taskValue!== ""){
+  if (taskValue !== "") {
     innerElement.innerHTML = `
     <p class="align">${taskValue}</p>
     <button id = "finish-btn"><i class="fa-regular fa-circle-check"></i></button>
     <button id ="edit-btn"><i class="fa-solid fa-pen-to-square"></i></button>
     <button id ="delete-btn"><i class="fa-solid fa-trash-can"></i></button>
-    ${isCompleted === false ? '<span class="incompleted">incompleted</span>' : '<span class="completed">completed</span>'}
+    ${
+      isCompleted === false
+        ? '<span class="incompleted">incompleted</span>'
+        : '<span class="completed">completed</span>'
+    }
     
     `;
     outputField.appendChild(innerElement);
     inputField.value = "";
     inputField.focus();
+  } else {
+    alert("please write something");
   }
-
- else{
-  alert("please write something")
- }
   const deleteButton = innerElement.querySelector("#delete-btn");
   deleteButton.addEventListener("click", deleteTask);
 
@@ -95,36 +97,33 @@ const deleteTask = (event) => {
   const selectedItem = event.target.parentElement.parentElement;
   outputField.removeChild(selectedItem);
   showToast("task is deleted", "danger");
-  if(event.target.parentNode.parentNode.children[4].innerText ==="incompleted"){
-   incompletedTask()
+  if (event.target.parentNode.parentNode.children[4].innerText === "incompleted") {
+    incompletedTask();
   }
-  if(event.target.parentNode.parentNode.children[4].innerText ==="completed"){
-   completedTask()
+  if (event.target.parentNode.parentNode.children[4].innerText === "completed") {
+    completedTask();
   }
-  
-  let selectedTaskId = event.target.parentNode.parentNode.id
+
+  let selectedTaskId = event.target.parentNode.parentNode.id;
   let tasks = getItemFromLocalStorage();
-  tasks = tasks.filter(task => task.taskId !== selectedTaskId);
-  localStorage.setItem("mytask",(JSON.stringify(tasks)));
-  incompletedTask()
-  completedTask()
+  tasks = tasks.filter((task) => task.taskId !== selectedTaskId);
+  localStorage.setItem("mytask", JSON.stringify(tasks));
+  incompletedTask();
+  completedTask();
 };
-
-
 
 //edit button
 
 const editTaskValue = (event) => {
   let editedText = prompt("enter your edited text");
-  if(editedText!==""){
+  if (editedText !== "") {
     let selectedText = event.target.parentNode.parentNode.children[0];
     selectedText.innerText = editedText;
-    const uniqueId =parseInt(event.target.parentNode.parentNode.id);
-    setEditedText(uniqueId,editedText);
-    showToast("Text is Edited","edited")
-  }
-  else{
-    alert("please added something")
+    const uniqueId = parseInt(event.target.parentNode.parentNode.id);
+    setEditedText(uniqueId, editedText);
+    showToast("Text is Edited", "edited");
+  } else {
+    alert("please added something");
   }
 };
 
@@ -134,9 +133,9 @@ const finishedTask = (event) => {
   event.target.parentNode.parentNode.children[4].style.background = "rgb(0, 161, 255)";
   event.target.parentNode.parentNode.children[4].style.background =
     "linear-gradient(329deg, rgba(0, 161, 255, 1) 0%, rgba(90, 233, 171) 100%)";
-  const uniqueId =parseInt(event.target.parentNode.parentNode.id) 
+  const uniqueId = parseInt(event.target.parentNode.parentNode.id);
   setCompletedStatus(uniqueId);
-  showToast("Task is Completed","completed")
+  showToast("Task is Completed", "completed");
   completedTask();
   incompletedTask();
 };
@@ -157,22 +156,22 @@ const completedTask = () => {
 
 //change complete status
 const setCompletedStatus = (uniqueId) => {
-  const  tasks = getItemFromLocalStorage();
-  for(let task of tasks){
-    if(parseInt(task.taskId) === uniqueId){
+  const tasks = getItemFromLocalStorage();
+  for (let task of tasks) {
+    if (parseInt(task.taskId) === uniqueId) {
       task.isCompleted = true;
     }
   }
-  localStorage.setItem("mytask",JSON.stringify(tasks))
+  localStorage.setItem("mytask", JSON.stringify(tasks));
 };
 
 //set new edited task
-const setEditedText = (uniqueId,editedText) => {
-  const  tasks = getItemFromLocalStorage();
-  for(let task of tasks){
-    if(parseInt(task.taskId) === uniqueId){
+const setEditedText = (uniqueId, editedText) => {
+  const tasks = getItemFromLocalStorage();
+  for (let task of tasks) {
+    if (parseInt(task.taskId) === uniqueId) {
       task.taskValue = editedText;
     }
   }
-  localStorage.setItem("mytask",JSON.stringify(tasks))
+  localStorage.setItem("mytask", JSON.stringify(tasks));
 };
