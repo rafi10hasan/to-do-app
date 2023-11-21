@@ -7,7 +7,7 @@ This is a simple to-do application.in this Application,you can add,edit,delete,c
 
 Insert gif or link to demo
 
-https://655cc1c2ce013d168596517e--bejewelled-semifreddo-61a959.netlify.app/
+https://r-to-do-app.netlify.app/
 
 ## Features
 
