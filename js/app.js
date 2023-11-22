@@ -29,8 +29,7 @@ const showToast = (msg, textStatus) => {
 const displayTasks = () => {
   const tasks = getItemFromLocalStorage();
   tasks.map((task) => createTask(task.taskValue, task.taskId, task.isCompleted));
-  completedTask();
-  incompletedTask();
+  countTask();
 };
 
 window.addEventListener("DOMContentLoaded", displayTasks);
@@ -46,7 +45,7 @@ const addTask = () => {
   const tasks = getItemFromLocalStorage();
   tasks.push({ taskValue, taskId, isCompleted });
   localStorage.setItem("mytask", JSON.stringify(tasks));
-  incompletedTask();
+  countTask();
 };
 
 // create Task
@@ -98,21 +97,20 @@ const deleteTask = (event) => {
   outputField.removeChild(selectedItem);
   showToast("task is deleted", "danger");
   if (event.target.parentNode.parentNode.children[4].innerText === "incompleted") {
-    incompletedTask();
+    countTask();
   }
   if (event.target.parentNode.parentNode.children[4].innerText === "completed") {
-    completedTask();
+    countTask();
   }
 
   let selectedTaskId = event.target.parentNode.parentNode.id;
   let tasks = getItemFromLocalStorage();
   tasks = tasks.filter((task) => task.taskId !== selectedTaskId);
   localStorage.setItem("mytask", JSON.stringify(tasks));
-  incompletedTask();
-  completedTask();
+  countTask();
 };
 
-//edit button
+//edit task
 
 const editTaskValue = (event) => {
   let editedText = prompt("enter your edited text");
@@ -136,20 +134,15 @@ const finishedTask = (event) => {
   const uniqueId = parseInt(event.target.parentNode.parentNode.id);
   setCompletedStatus(uniqueId);
   showToast("Task is Completed", "completed");
-  completedTask();
-  incompletedTask();
+  countTask();
 };
 
-//count incompleted task
-const incompletedTask = () => {
+//count task function
+
+const countTask = () => {
   const tasks = getItemFromLocalStorage();
   let incompletedArray = tasks.filter((task) => task.isCompleted === false);
   incompleted.innerText = incompletedArray.length;
-};
-
-//count completed task
-const completedTask = () => {
-  const tasks = getItemFromLocalStorage();
   let completedArray = tasks.filter((task) => task.isCompleted === true);
   completed.innerText = completedArray.length;
 };
